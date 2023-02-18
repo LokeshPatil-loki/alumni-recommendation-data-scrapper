@@ -1,0 +1,11 @@
+# Ignore Cache Data
+my/path
+my
+
+# Ignore Cookie
+cookie.json
+cookie*.json
+
+
+# Node Module
+node_modules
