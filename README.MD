@@ -44,6 +44,11 @@ vim cookie.json
 ## Custom
 - update index.js inside dataset accordingly
 
+## Get Public ip
+```
+curl ipinfo.io/ip
+
+```
 
 ## Run Script
 ```
