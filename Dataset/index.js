@@ -2,8 +2,8 @@ import ExtractProfileURLs from "./ExtractProfileURLs.js";
 import ScrapeProfiles from "./ScrapeProfile.js";
 import mongoose from "mongoose";
 import fs from "fs";
-import { storeURLs } from "./urls/storeURLs.js";
-import { storeProfiles } from "./storeProfile.js";
+import urlGroup1 from "./urls/preprocess/batch-1[200]/url-group-1.json" assert { type: "json" };
+
 
 const extractUrls = async (keyword) => {
   const profileUrls = await ExtractProfileURLs(keyword,true);
@@ -12,7 +12,7 @@ const extractUrls = async (keyword) => {
 } 
 
 const scrapeProfiles = async (urls) => {
-  const profiles = await ScrapeProfiles(urls,false);
+  const profiles = await ScrapeProfiles(urls,true);
   console.log(JSON.stringify(profiles));
   fs.writeFileSync("./data.json",JSON.stringify(profiles))
 } 
@@ -22,8 +22,7 @@ mongoose.connect("mongodb+srv://root:root@cluster0.xn1jwgu.mongodb.net/Alumni",a
     console.log(err);
   }else{
     console.log("Connected ");
-    await storeURLs();
-    await storeProfiles();
+    await scrapeProfiles(urlGroup1);
     mongoose.disconnect();
     return;
   }
