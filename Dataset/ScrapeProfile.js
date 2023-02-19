@@ -62,12 +62,12 @@ const ScrapeProfiles = async (profileURL, headless = true) => {
     // await page.goto(profileURL[i],{waitUntil: 'domcontentloaded'});
     if(await profileExists(profileURL[i])){
       console.log("Already Exists: ", profileURL[i]);
-      const urlDocument = await URLModel.updateOne({url: profile.url}, {profileAdded: true});
-      if(urlDocument.matchedCount == 1){
-        console.log("Added to url collection: ", profile.url);
-      }else{
-        console.log("Error while Adding URL: ", profile.url);
-      }
+      // const urlDocument = await URLModel.updateOne({url: profile.url}, {profileAdded: true});
+      // if(urlDocument.matchedCount == 1){
+      //   console.log("Added to url collection: ", profile.url);
+      // }else{
+      //   console.log("Error while Adding URL: ", profile.url);
+      // }
       continue;
     }else{
       console.log("Scrapping:",profileURL[i]);
