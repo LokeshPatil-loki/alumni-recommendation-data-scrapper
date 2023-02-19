@@ -2,7 +2,7 @@ import ExtractProfileURLs from "./ExtractProfileURLs.js";
 import ScrapeProfiles from "./ScrapeProfile.js";
 import mongoose from "mongoose";
 import fs from "fs";
-import urlGroup1 from "./urls/preprocess/batch-1[200]/url-group-1.json" assert { type: "json" };
+import urlGroup1 from "./urls/preprocess/batch-1[200]/url-group-3.json" assert { type: "json" };
 
 
 const extractUrls = async (keyword) => {
