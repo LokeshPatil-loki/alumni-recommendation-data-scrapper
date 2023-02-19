@@ -3,6 +3,7 @@ import puppeteer from "puppeteer";
 import fs from "fs";
 import {ProfileModel} from "./models/Profile.js"
 import { profileExists } from "./models/ProfileExists.js";
+import { URLModel } from "./models/URL.js";
 const COLLEGE = "Bharati Vidyapeeth College of Engineering, Navi Mumbai";
 
 const cookie = JSON.parse(fs.readFileSync("../cookie.json"));
@@ -61,6 +62,12 @@ const ScrapeProfiles = async (profileURL, headless = true) => {
     // await page.goto(profileURL[i],{waitUntil: 'domcontentloaded'});
     if(await profileExists(profileURL[i])){
       console.log("Already Exists: ", profileURL[i]);
+      const urlDocument = await URLModel.updateOne({url: profile.url}, {profileAdded: true});
+      if(urlDocument.matchedCount == 1){
+        console.log("Added to url collection: ", profile.url);
+      }else{
+        console.log("Error while Adding URL: ", profile.url);
+      }
       continue;
     }else{
       console.log("Scrapping:",profileURL[i]);
@@ -208,6 +215,12 @@ const ScrapeProfiles = async (profileURL, headless = true) => {
     try {
       if(await ProfileModel.create(profile)){
         console.log("Added to db");
+        const urlDocument = await URLModel.updateOne({url: profile.url}, {profileAdded: true});
+        if(urlDocument.matchedCount == 1){
+          console.log("Added to url collection: ", profile.url);
+        }else{
+          console.log("Error while Adding URL: ", profile.url);
+        }
       }
     } catch (error) {
       console.log(error);
