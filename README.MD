@@ -28,6 +28,9 @@ npm install
 
 ## Add cookie.json
 ```
+vim cookie.json
+```
+```
 {
     "name": "li_at",
     "value": "<ADD YOUR li_at cookie from linkedin>",
