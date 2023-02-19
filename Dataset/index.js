@@ -1,26 +1,34 @@
 import ExtractProfileURLs from "./ExtractProfileURLs.js";
 import ScrapeProfiles from "./ScrapeProfile.js";
+import mongoose from "mongoose";
 import fs from "fs";
-import { profile } from "console";
+import { storeURLs } from "./urls/storeURLs.js";
+import { storeProfiles } from "./storeProfile.js";
 
-// const keyword = "";
-// const profileUrls = await ExtractProfileURLs(keyword,true);
-// console.log(profileUrls);
-// fs.writeFileSync("./Dataset/urls.json",JSON.stringify(profileUrls))
+const extractUrls = async (keyword) => {
+  const profileUrls = await ExtractProfileURLs(keyword,true);
+  console.log(profileUrls);
+  fs.writeFileSync("./urls-19.json",JSON.stringify(profileUrls));
+} 
 
-// const profileUrls = [
-//   'https://www.linkedin.com/in/akanksha-joshi-b715ba1ba',
-//   "https://www.linkedin.com/in/priya-saw-875476209/",
-//   'https://www.linkedin.com/in/siddhi-chavan-99085b18a',
-// ]
+const scrapeProfiles = async (urls) => {
+  const profiles = await ScrapeProfiles(urls,false);
+  console.log(JSON.stringify(profiles));
+  fs.writeFileSync("./data.json",JSON.stringify(profiles))
+} 
 
-// const profileUrls = [
-//   "https://www.linkedin.com/in/priya-saw-875476209/",
-// ]
+mongoose.connect("mongodb+srv://root:root@cluster0.xn1jwgu.mongodb.net/Alumni",async (err) => {
+  if(err){
+    console.log(err);
+  }else{
+    console.log("Connected ");
+    await storeURLs();
+    await storeProfiles();
+    mongoose.disconnect();
+    return;
+  }
+})
 
-const profiles = await ScrapeProfiles([
-"https://www.linkedin.com/in/anshu-kumar-jha-3b26111a4",
-],false);
-console.log(JSON.stringify(profiles));
-fs.writeFileSync("./data.json",JSON.stringify(profiles))
+
+
 

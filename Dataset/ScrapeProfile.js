@@ -1,6 +1,8 @@
 import * as cheerio from "cheerio";
 import puppeteer from "puppeteer";
 import fs from "fs";
+import {ProfileModel} from "./models/Profile.js"
+import { profileExists } from "./models/ProfileExists.js";
 const COLLEGE = "Bharati Vidyapeeth College of Engineering, Navi Mumbai";
 
 const cookie = JSON.parse(fs.readFileSync("../cookie.json"));
@@ -57,6 +59,12 @@ const ScrapeProfiles = async (profileURL, headless = true) => {
     profile.certifications = [];
 
     // await page.goto(profileURL[i],{waitUntil: 'domcontentloaded'});
+    if(await profileExists(profileURL[i])){
+      console.log("Already Exists: ", profileURL[i]);
+      continue;
+    }else{
+      console.log("Scrapping:",profileURL[i]);
+    }
     await page.goto(profileURL[i]);
     await page.waitForSelector(selectors.education.title);
     let reuslt = await page.evaluate(() => {
@@ -159,7 +167,8 @@ const ScrapeProfiles = async (profileURL, headless = true) => {
           profile.skills.push(skill);
         });
         console.log(profile.skills);
-      } catch (error) {}
+      } catch (error) {
+      }
       // console.log(profile);
 
       try {
@@ -191,10 +200,18 @@ const ScrapeProfiles = async (profileURL, headless = true) => {
         } else {
           console.log("No certificaiton");
         }
-      } catch (error) {}
+      } catch (error) {
+      }
     }
 
     profiles.push(profile);
+    try {
+      if(await ProfileModel.create(profile)){
+        console.log("Added to db");
+      }
+    } catch (error) {
+      console.log(error);
+    }
     console.log(JSON.stringify(profile));
     console.log("--------------------------------------------------------------------\n");
   }
