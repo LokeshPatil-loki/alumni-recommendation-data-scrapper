@@ -1,4 +1,4 @@
-import urlBatch from "./url-batch-600-1000.json" assert { type: "json" };
+import urlBatch from "./url-batch-1000-1203.json" assert { type: "json" };
 import fs from "fs";
 
 const urlArray = urlBatch.map(urlItem => urlItem.url);
